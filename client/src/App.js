@@ -3,7 +3,7 @@ import Login from "./components/Login";
 import Mypage from "./components/Mypage";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   return (
     <div className="App">
       {isLogin ? (
