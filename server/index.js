@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const HTTPS_PORT = 4000;
 
+const controllers = require("./controllers");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
@@ -17,9 +19,9 @@ app.use(
 );
 app.use(cookieParser());
 
-app.use("/", (req, res) => {
-  res.send("hello");
-});
+app.post("/login", controllers.login);
+app.get("/accesstokenrequest", controllers.accessTokenRequest);
+app.get("/refreshtokenrequest", controllers.refreshTokenRequest);
 
 let server;
 if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
@@ -28,9 +30,7 @@ if (fs.existsSync("./key.pem") && fs.existsSync("./cert.pem")) {
   const credentials = { key: privateKey, cert: certificate };
 
   server = https.createServer(credentials, app);
-  server.listen(HTTPS_PORT, () =>
-    console.log("server runnning https://localhost:4000")
-  );
+  server.listen(HTTPS_PORT, () => console.log("server runnning https://localhost:4000"));
 } else {
   server = app.listen(HTTPS_PORT);
 }
