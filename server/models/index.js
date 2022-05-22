@@ -5,7 +5,7 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.json")[env];
+const config = require(__dirname + "/../config/config.js")[env];
 const db = {};
 
 let sequelize;
@@ -22,9 +22,10 @@ fs.readdirSync(__dirname)
   })
   .forEach((file) => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+    //db.users와 같이 db 객체 내부에 모델 인스턴스를 저장합니다.
     db[model.name] = model;
   });
-
+//associate 부분에 내용이 존재한다면 자동으로 관계를 형성합니다.
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
@@ -33,5 +34,5 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
+//여러 모델 인스턴스가 담긴 객체를 내보냅니다.
 module.exports = db;
