@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const axios = require("axios");
 
-function Login() {
+function Login(props) {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,7 +20,8 @@ function Login() {
         password: password,
       })
       .then((res) => {
-        console.log("ok");
+        props.issueAccessToken(res.data.data.accessToken);
+        props.loginHandler(res.data.data.accessToken);
       });
   };
 
@@ -28,21 +29,11 @@ function Login() {
     <div className="Login">
       <div className="inputField">
         <div>Username</div>
-        <input
-          name="userId"
-          value={userId}
-          onChange={inputUserIdHandler}
-          type="text"
-        />
+        <input name="userId" value={userId} onChange={inputUserIdHandler} type="text" />
       </div>
       <div className="inputField">
         <div>Password</div>
-        <input
-          name="password"
-          value={password}
-          onChange={inputPasswordHandler}
-          type="password"
-        />
+        <input name="password" value={password} onChange={inputPasswordHandler} type="password" />
       </div>
       <div className="loginBtnContainer">
         <button className="loginBtn" onClick={loginRequestHandler}>

@@ -4,6 +4,19 @@ import Mypage from "./components/Mypage";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
+  const [accessToken, setAccessToken] = useState("");
+
+  const loginHandler = (data) => {
+    if (!data) {
+      setIsLogin(false);
+    } else {
+      setIsLogin(true);
+    }
+  };
+
+  const issueAccessToken = (token) => {
+    setAccessToken(token);
+  };
   return (
     <div className="App">
       {isLogin ? (
@@ -12,7 +25,11 @@ function App() {
         </div>
       ) : (
         <div>
-          <Login />
+          <Login
+            loginHandler={loginHandler}
+            accessToken={accessToken}
+            issueAccessToken={issueAccessToken}
+          />
         </div>
       )}
     </div>
