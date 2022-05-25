@@ -14,6 +14,11 @@ function Mypage({ accessToken, issueAccessToken }) {
       })
       .then((res) => {
         console.log(res);
+        setEmail(res.data.data.email);
+        setCreatedAt(res.data.data.createdAt);
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
       });
   };
 
