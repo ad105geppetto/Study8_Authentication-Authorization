@@ -21,7 +21,7 @@ function App() {
     <div className="App">
       {isLogin ? (
         <div>
-          <Mypage />
+          <Mypage accessToken={accessToken} issueAccessToken={issueAccessToken} />
         </div>
       ) : (
         <div>
