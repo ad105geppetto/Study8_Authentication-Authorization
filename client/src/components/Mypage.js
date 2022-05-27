@@ -14,8 +14,8 @@ function Mypage({ accessToken, issueAccessToken }) {
       })
       .then((res) => {
         console.log(res);
-        setEmail(res.data.data.email);
-        setCreatedAt(res.data.data.createdAt);
+        setEmail(res.data.data.userInfo.email);
+        setCreatedAt(res.data.data.userInfo.createdAt);
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -30,6 +30,11 @@ function Mypage({ accessToken, issueAccessToken }) {
       })
       .then((res) => {
         console.log(res);
+        setEmail(res.data.data.userInfo.email);
+        setCreatedAt(res.data.data.userInfo.createdAt);
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
       });
   };
   return (

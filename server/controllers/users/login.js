@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
       updatedAt: userInfo.dataValues.updatedAt,
     };
     const accessToken = jwt.sign(Payload, process.env.ACCESS_SECRET, { expiresIn: "10s" });
-    const refreshToken = jwt.sign(Payload, process.env.REFRESH_SECRET, { expiresIn: "1d" });
+    const refreshToken = jwt.sign(Payload, process.env.REFRESH_SECRET, { expiresIn: "20s" });
     res
       .status(200)
       .cookie("refreshToken", refreshToken, {

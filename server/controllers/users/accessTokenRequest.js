@@ -1,3 +1,4 @@
+const { Users } = require("../../models");
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res) => {
@@ -8,11 +9,26 @@ module.exports = (req, res) => {
     res.status(400).json({ data: null, message: "invalid access token" });
   } else {
     const token = authorization.split(" ")[1];
-    jwt.verify(token, process.env.ACCESS_SECRET, (err, data) => {
+    jwt.verify(token, process.env.ACCESS_SECRET, async (err, data) => {
       if (err) {
         res.status(403).json({ message: err.message }); // 토큰의 만료로 인한 에러
       } else {
-        res.json({ data: data, message: "ok" });
+        const userData = await Users.findOne({
+          where: { userId: data.userId },
+        });
+        if (!userData) {
+          res.status(400).send({ data: null, message: "access token has been tempered" }); //액세스토큰이 강화되었다??
+        } else {
+          const userInfo = {
+            id: userData.id,
+            userId: userData.userId,
+            email: userData.email,
+            createdAt: userData.createdAt,
+            updatedAt: userData.updatedAt,
+          };
+
+          res.json({ data: { userInfo: userInfo }, message: "ok" });
+        }
       }
     });
   }
