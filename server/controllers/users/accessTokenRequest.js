@@ -10,6 +10,7 @@ module.exports = (req, res) => {
   } else {
     const token = authorization.split(" ")[1];
     jwt.verify(token, process.env.ACCESS_SECRET, async (err, data) => {
+      console.log(data);
       if (err) {
         res.status(403).json({ message: err.message }); // 토큰의 만료로 인한 에러
       } else {

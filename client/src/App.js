@@ -7,10 +7,12 @@ function App() {
   const [accessToken, setAccessToken] = useState("");
 
   const loginHandler = (data) => {
+    console.log(data);
     if (!data) {
       setIsLogin(false);
     } else {
       setIsLogin(true);
+      issueAccessToken(data.data.accessToken);
     }
   };
 
@@ -25,11 +27,7 @@ function App() {
         </div>
       ) : (
         <div>
-          <Login
-            loginHandler={loginHandler}
-            accessToken={accessToken}
-            issueAccessToken={issueAccessToken}
-          />
+          <Login loginHandler={loginHandler} accessToken={accessToken} />
         </div>
       )}
     </div>

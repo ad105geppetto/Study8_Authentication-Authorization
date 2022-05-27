@@ -13,29 +13,45 @@ function Mypage({ accessToken, issueAccessToken }) {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res);
-        setEmail(res.data.data.userInfo.email);
-        setCreatedAt(res.data.data.userInfo.createdAt);
+        if (res.data.message !== "ok") {
+          const message =
+            "access token이 만료되어 불러올 수 없습니다. refresh token을 사용해주시기 바랍니다.";
+          setEmail(res.data.data.userInfo.email);
+          setCreatedAt(res.data.data.userInfo.createdAt);
+        } else {
+          const { createdAt, userId, email } = res.data.data.userInfo;
+          setUserId(userId);
+          setEmail(email);
+          setCreatedAt(createdAt);
+        }
       })
-      .catch((err) => {
-        alert(err.response.data.message);
-      });
+      .catch((err) => {});
   };
 
   const refreshTokenRequest = () => {
     axios
       .get("https://localhost:4000/refreshtokenrequest", {
-        headers: { authorization: `Bearer ${accessToken}` },
         withCredentials: true,
       })
       .then((res) => {
         console.log(res);
-        setEmail(res.data.data.userInfo.email);
-        setCreatedAt(res.data.data.userInfo.createdAt);
+        if (res.data.message !== "ok") {
+          console.log(res);
+          const message =
+            "refresh token이 만료되어 불러올 수 없습니다. 다시 로그인 해주시기 바랍니다.";
+          setEmail(message);
+          setCreatedAt(message);
+          return;
+        } else {
+          console.log(res);
+          const { createdAt, userId, email } = res.data.data.userInfo;
+          setUserId(userId);
+          setEmail(email);
+          setCreatedAt(createdAt);
+          issueAccessToken(res.data.data.newAccessToken);
+        }
       })
-      .catch((err) => {
-        alert(err.response.data.message);
-      });
+      .catch((err) => {});
   };
   return (
     <div className="mypageContainer">

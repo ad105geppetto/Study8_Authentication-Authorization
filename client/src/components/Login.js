@@ -15,13 +15,16 @@ function Login(props) {
 
   const loginRequestHandler = () => {
     axios
-      .post("https://localhost:4000/login", {
-        userId: userId,
-        password: password,
-      })
+      .post(
+        "https://localhost:4000/login",
+        {
+          userId: userId,
+          password: password,
+        },
+        { headers: { "Content-Type": "application/json" }, withCredentials: true }
+      )
       .then((res) => {
-        props.issueAccessToken(res.data.data.accessToken);
-        props.loginHandler(res.data.data.accessToken);
+        props.loginHandler(res.data);
       });
   };
 
