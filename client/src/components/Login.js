@@ -28,6 +28,10 @@ function Login(props) {
       });
   };
 
+  const socialLoginHandler = () => {
+    window.location.assign(process.env.REACT_APP_GITHUB_LOGIN_URL);
+  };
+
   return (
     <div className="Login">
       <div className="inputField">
@@ -41,6 +45,11 @@ function Login(props) {
       <div className="loginBtnContainer">
         <button className="loginBtn" onClick={loginRequestHandler}>
           JWT Login
+        </button>
+        <br />
+        <br />
+        <button className="socialloginBtn" onClick={socialLoginHandler}>
+          Github으로 로그인
         </button>
       </div>
     </div>
