@@ -1,24 +1,38 @@
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import Mypage from "./components/Mypage";
+const axios = require("axios");
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [accessToken, setAccessToken] = useState("");
 
-  const getAccessToken = async (authorizationCode) => {
-    let resp = await axios.post("http://localhost:4000/callback", {
-      authorizationCode: authorizationCode,
-    });
-    setIsLogin(true);
-    setAccessToken(resp.data.accessToken);
+  const getAccessToken = (authorizationCode) => {
+    console.log("getAccess");
+    axios
+      .post(
+        "https://localhost:4000/callback",
+        {
+          authorizationCode: authorizationCode,
+        },
+        { headers: { "Content-Type": "application/json" }, withCredentials: true }
+      )
+      .then((resp) => {
+        console.log(resp);
+        setIsLogin(true);
+        setAccessToken(resp.data.accessToken);
+      });
   };
 
   useEffect(() => {
     const url = new URL(window.location.href);
+    console.log(url);
     const authorizationCode = url.searchParams.get("code");
     if (authorizationCode) {
+      console.log("인증됨@@@@@");
       getAccessToken(authorizationCode);
+    } else {
+      console.log("인증 안됨");
     }
   }, []);
 

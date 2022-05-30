@@ -13,11 +13,13 @@ function Mypage({ accessToken, issueAccessToken }) {
         withCredentials: true,
       })
       .then((res) => {
+        console.log(res.data);
         if (res.data.message !== "ok") {
           const message =
             "access token이 만료되어 불러올 수 없습니다. refresh token을 사용해주시기 바랍니다.";
           setEmail(res.data.data.userInfo.email);
           setCreatedAt(res.data.data.userInfo.createdAt);
+          console.log(message);
         } else {
           const { createdAt, userId, email } = res.data.data.userInfo;
           setUserId(userId);
@@ -25,7 +27,9 @@ function Mypage({ accessToken, issueAccessToken }) {
           setCreatedAt(createdAt);
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const refreshTokenRequest = () => {
@@ -34,16 +38,13 @@ function Mypage({ accessToken, issueAccessToken }) {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res);
         if (res.data.message !== "ok") {
-          console.log(res);
           const message =
             "refresh token이 만료되어 불러올 수 없습니다. 다시 로그인 해주시기 바랍니다.";
           setEmail(message);
           setCreatedAt(message);
           return;
         } else {
-          console.log(res);
           const { createdAt, userId, email } = res.data.data.userInfo;
           setUserId(userId);
           setEmail(email);

@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: ["https://localhost:3000"],
+    origin: true,
     credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
   })
@@ -20,6 +20,7 @@ app.use(
 app.use(cookieParser());
 
 app.post("/login", controllers.login);
+app.post("/callback", controllers.handleCallback);
 app.get("/accesstokenrequest", controllers.accessTokenRequest);
 app.get("/refreshtokenrequest", controllers.refreshTokenRequest);
 
