@@ -9,6 +9,8 @@ module.exports = (req, res) => {
     res.status(400).json({ data: null, message: "invalid access token" });
   } else {
     const token = authorization.split(" ")[1];
+    // Oauth로 access토큰을 생성하더라도 토큰을 확인하고자 한다면 아래와 같은 JWT 메서드를 거쳐야한다.
+    // Oauth의 access 토큰은 JWT로 만든게 아니라서 데이터가 복호화 되지 않는다.
     jwt.verify(token, process.env.ACCESS_SECRET, async (err, data) => {
       console.log(data);
       if (err) {
