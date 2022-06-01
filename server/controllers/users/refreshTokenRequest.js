@@ -31,7 +31,7 @@ module.exports = (req, res) => {
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.log(err, "리프레시토큰 기간만료");
           });
       }
     });

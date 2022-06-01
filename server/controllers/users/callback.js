@@ -5,7 +5,6 @@ const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 const axios = require("axios");
 
 module.exports = (req, res) => {
-  console.log(req);
   axios({
     method: "post",
     url: `https://github.com/login/oauth/access_token`,
@@ -20,8 +19,9 @@ module.exports = (req, res) => {
     },
   })
     .then((response) => {
+      console.log(response.data);
       accessToken = response.data.access_token;
-      res.status(200).json({ accessToken: accessToken, message: "ok" });
+      res.status(200).json({ accessToken: accessToken, response: response.data, message: "ok" });
     })
     .catch((e) => {
       res.status(404);

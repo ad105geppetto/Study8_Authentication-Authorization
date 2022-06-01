@@ -38,21 +38,22 @@ function Mypage({ accessToken, issueAccessToken }) {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.message !== "ok") {
-          const message =
-            "refresh token이 만료되어 불러올 수 없습니다. 다시 로그인 해주시기 바랍니다.";
-          setEmail(message);
-          setCreatedAt(message);
-          return;
-        } else {
-          const { createdAt, userId, email } = res.data.data.userInfo;
-          setUserId(userId);
-          setEmail(email);
-          setCreatedAt(createdAt);
-          issueAccessToken(res.data.data.newAccessToken);
-        }
+        const { createdAt, userId, email } = res.data.data.userInfo;
+        setUserId(userId);
+        setEmail(email);
+        setCreatedAt(createdAt);
+        issueAccessToken(res.data.data.newAccessToken);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setTimeout(() => {
+          window.location.replace("/");
+        }, 2000);
+        console.log(err.response.data.message);
+        const message = err.response.data.message;
+        setEmail(message);
+        setCreatedAt(message);
+        return;
+      });
   };
   return (
     <div className="mypageContainer">

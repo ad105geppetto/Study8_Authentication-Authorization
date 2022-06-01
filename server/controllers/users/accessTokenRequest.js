@@ -1,8 +1,8 @@
 const { Users } = require("../../models");
 const jwt = require("jsonwebtoken");
+const { default: axios } = require("axios");
 
 module.exports = (req, res) => {
-  console.log(req);
   const { authorization } = req.headers;
   if (!authorization) {
     // 실제 서비스에서 로직상으로 로그인되지 않은 사람은 마이페이지에 들어오지 못하도록 되어있는데 이것을 넣을 이유가 있을까??
@@ -11,6 +11,23 @@ module.exports = (req, res) => {
     const token = authorization.split(" ")[1];
     // Oauth로 access토큰을 생성하더라도 토큰을 확인하고자 한다면 아래와 같은 JWT 메서드를 거쳐야한다.
     // Oauth의 access 토큰은 JWT로 만든게 아니라서 데이터가 복호화 되지 않는다.
+    if (token.slice(0, 3) === "gho") {
+      return axios
+        .get("https://api.github.com/user", { headers: { Authorization: `token ${token}` } })
+        .then((data) => {
+          const userInfo = {
+            id: data.data.id,
+            userId: data.data.login,
+            email: data.data.email,
+            createdAt: data.data.created_at,
+            updatedAt: data.data.updated_at,
+          };
+          res.json({
+            data: { userInfo: userInfo },
+            message: "ok",
+          });
+        });
+    }
     jwt.verify(token, process.env.ACCESS_SECRET, async (err, data) => {
       console.log(data);
       if (err) {

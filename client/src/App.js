@@ -8,7 +8,6 @@ function App() {
   const [accessToken, setAccessToken] = useState("");
 
   const getAccessToken = (authorizationCode) => {
-    console.log("getAccess");
     axios
       .post(
         "https://localhost:4000/callback",
@@ -18,7 +17,6 @@ function App() {
         { headers: { "Content-Type": "application/json" }, withCredentials: true }
       )
       .then((resp) => {
-        console.log(resp);
         setIsLogin(true);
         setAccessToken(resp.data.accessToken);
       });
@@ -26,7 +24,6 @@ function App() {
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    console.log(url);
     const authorizationCode = url.searchParams.get("code");
     if (authorizationCode) {
       console.log("인증됨@@@@@");
@@ -53,7 +50,11 @@ function App() {
     <div className="App">
       {isLogin ? (
         <div>
-          <Mypage accessToken={accessToken} issueAccessToken={issueAccessToken} />
+          <Mypage
+            accessToken={accessToken}
+            issueAccessToken={issueAccessToken}
+            getAccessToken={getAccessToken}
+          />
         </div>
       ) : (
         <div>
